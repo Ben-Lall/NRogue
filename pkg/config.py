@@ -1,5 +1,5 @@
-import libtcodpy as libtcod
-import Creatures.player as p
+import pkg.libtcodpy as libtcod
+from pkg.Creatures import player as p
 
 # Screen Dimensions
 screen_width = 80
@@ -17,6 +17,9 @@ player = p.Player(20, 20, '@', libtcod.white)
 
 # Array of Entities
 entities = [player]
+
+#fov
+fov_recompute = True
 
 
 
