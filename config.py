@@ -1,4 +1,5 @@
 import libtcodpy as libtcod
+import Creatures.player as p
 
 # Screen Dimensions
 screen_width = 80
@@ -9,6 +10,14 @@ background_color = libtcod.white
 
 # Console
 con = libtcod.console_new(screen_width, screen_height)
-game_state = "playing"
+game_state = 'playing'
+
+# Player Init
+player = p.Player(20, 20, '@', libtcod.white)
+
+# Array of Entities
+entities = [player]
+
+
 
 
