@@ -8,7 +8,3 @@ class Player(entity.Entity):
         self.char = char
         self.color = color
         self.blocks = blocks
-
-    def move(self, dx, dy):
-        self.x += dx
-        self.y += dy

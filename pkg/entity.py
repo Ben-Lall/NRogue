@@ -1,4 +1,4 @@
-from pkg import libtcodpy as libtcod
+import pkg.libtcodpy as libtcod
 
 
 class Entity:
@@ -16,5 +16,11 @@ class Entity:
 
     def clear(self, con):
         libtcod.console_put_char(con, self.x, self.y, ' ', libtcod.BKGND_NONE)
+
+    def move(self, dx, dy, map):
+        target = map[self.x + dx][self.y + dy]
+        if not target.blocked:
+            self.x += dx
+            self.y += dy
 
 

@@ -1,4 +1,4 @@
-import libtcodpy as libtcod
+import pkg.libtcodpy as libtcod
 import pkg.config as c
 
 
@@ -12,45 +12,45 @@ def handle_keys():
     if c.game_state == 'playing':
         # Movement keys (Arrows)
         if libtcod.console_is_key_pressed(libtcod.KEY_UP):
-            c.player.move(0, -1)
+            c.player.move(0, -1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_DOWN):
-            c.player.move(0, 1)
+            c.player.move(0, 1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_LEFT):
-            c.player.move(-1, 0)
+            c.player.move(-1, 0, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_RIGHT):
-            c.player.move(1, 0)
+            c.player.move(1, 0, c.map)
             c.fov_recompute = True
 
 
         # Movement keys (NumPad Numbers)
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP1):
-            c.player.move(-1, 1)
+            c.player.move(-1, 1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP2):
-            c.player.move(0, 1)
+            c.player.move(0, 1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP3):
-            c.player.move(1, 1)
+            c.player.move(1, 1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP4):
-            c.player.move(-1, 0)
+            c.player.move(-1, 0, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP5):
-            c.player.move(0, 0)
+            c.player.move(0, 0, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP6):
-            c.player.move(1, 0)
+            c.player.move(1, 0, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP7):
-            c.player.move(-1, -1)
+            c.player.move(-1, -1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP8):
-            c.player.move(0, -1)
+            c.player.move(0, -1, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP9):
-            c.player.move(1, -1)
+            c.player.move(1, -1, c.map)
             c.fov_recompute = True
 
