@@ -9,6 +9,9 @@ def handle_keys():
     if key.vk == libtcod.KEY_ENTER and key.lalt:
         libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
+    if key.vk == libtcod.KEY_ESCAPE:
+        return 'exit'
+
     if c.game_state == 'playing':
         # Movement keys (Arrows)
         if libtcod.console_is_key_pressed(libtcod.KEY_UP):
@@ -38,7 +41,7 @@ def handle_keys():
             c.player.move(-1, 0, c.map)
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP5):
-            c.player.move(0, 0, c.map)
+            return 'wait'
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP6):
             c.player.move(1, 0, c.map)
@@ -52,4 +55,6 @@ def handle_keys():
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP9):
             c.player.move(1, -1, c.map)
             c.fov_recompute = True
+        else:
+            return 'noTurn'
 

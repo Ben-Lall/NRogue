@@ -1,5 +1,4 @@
 import pkg.libtcodpy as libtcod
-from pkg.Creatures import player as p
 
 # Debug
 DEBUG = False
@@ -20,10 +19,11 @@ con = libtcod.console_new(screen_width, screen_height)
 game_state = 'playing'
 
 # Player Init
-player = p.Player(20, 20, '@', libtcod.white)
+player = None
+player_name = 'me'
 
 # Array of Entities
-entities = [player]
+entities = []
 
 # Map Parameters
 MAP_WIDTH = 80
@@ -32,6 +32,7 @@ map = []
 
 # Mapgen Parameters
 rooms = []
+MAX_ROOM_MONSTERS = 3
 # Likely will not be used in the future, but for now...
 ROOM_MAX_SIZE = 10
 ROOM_MIN_SIZE = 6
@@ -45,6 +46,17 @@ fov_map = libtcod.map_new(MAP_WIDTH, MAP_HEIGHT)
 fov_recompute = True
 
 
+def is_blocked(x, y):
+    # first test the map tile
+    if map[x][y].blocked:
+        return True
+
+    # now check for any blocking objects
+    for entity in entities:
+        if entity.blocks and entity.x == x and entity.y == y:
+            return True
+
+    return False
 
 
 

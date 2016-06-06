@@ -29,4 +29,12 @@ while not libtcod.console_is_window_closed():
         entity.clear(c.con)
 
     # Pend for player input
-    io.handle_keys()
+    player_action = io.handle_keys()
+    if player_action == 'exit':
+        break
+
+    # Simulate turns
+    if c.game_state == 'playing' and player_action != 'noTurn':
+        for entity in c.entities:
+            if entity != c.player and libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y):
+                entity.ai.take_turn()
