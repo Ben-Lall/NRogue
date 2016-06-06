@@ -1,6 +1,9 @@
 import pkg.libtcodpy as libtcod
 from pkg.Creatures import player as p
 
+# Debug
+DEBUG = True
+
 # Screen Dimensions
 screen_width = 80
 screen_height = 50
@@ -27,9 +30,17 @@ MAP_WIDTH = 80
 MAP_HEIGHT = 45
 map = []
 
+# Mapgen Parameters
+rooms = []
+# Likely will not be used in the future, but for now...
+ROOM_MAX_SIZE = 10
+ROOM_MIN_SIZE = 6
+MAX_ROOMS = 30
+
 # Parameters for FOV
 FOV_ALGORITHM = 0
 fov_recompute = True
+
 
 
 

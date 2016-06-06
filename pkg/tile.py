@@ -10,3 +10,13 @@ class Tile:
 
         # By default, tiles start unexplored
         self.explored = False
+
+    # Set blocked and block_sight to false
+    def set_unblocked(self):
+        self.blocked = False
+        self.block_sight = False
+
+    # Set blocked and block_sight to false
+    def set_blocked(self):
+        self.blocked = True
+        self.block_sight = True

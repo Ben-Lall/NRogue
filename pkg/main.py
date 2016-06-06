@@ -1,4 +1,4 @@
-import io
+import pkg.io as io
 import pkg.libtcodpy as libtcod
 import pkg.config as c
 import pkg.builder as builder

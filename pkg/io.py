@@ -1,7 +1,7 @@
 import pkg.libtcodpy as libtcod
 import pkg.config as c
 
-
+# Pends for user keyboard input, then handles it accordingly
 def handle_keys():
     key = libtcod.console_wait_for_keypress(True)
 
@@ -23,7 +23,6 @@ def handle_keys():
         elif libtcod.console_is_key_pressed(libtcod.KEY_RIGHT):
             c.player.move(1, 0, c.map)
             c.fov_recompute = True
-
 
         # Movement keys (NumPad Numbers)
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP1):
