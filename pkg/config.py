@@ -2,7 +2,7 @@ import pkg.libtcodpy as libtcod
 from pkg.Creatures import player as p
 
 # Debug
-DEBUG = True
+DEBUG = False
 
 # Screen Dimensions
 screen_width = 80
@@ -39,6 +39,9 @@ MAX_ROOMS = 30
 
 # Parameters for FOV
 FOV_ALGORITHM = 0
+FOV_LIGHT_WALLS = True
+torch_radius = 10
+fov_map = libtcod.map_new(MAP_WIDTH, MAP_HEIGHT)
 fov_recompute = True
 
 

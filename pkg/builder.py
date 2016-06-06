@@ -32,11 +32,21 @@ def render_all():
 
     for y in range(c.MAP_HEIGHT):
         for x in range(c.MAP_WIDTH):
+            visible = libtcod.map_is_in_fov(c.fov_map, x, y)
             wall = c.map[x][y].blocked
-            if wall:
-                libtcod.console_set_char_background(c.con, x, y, c.color_dark_wall, libtcod.BKGND_SET)
+            if visible:
+                if wall:
+                    libtcod.console_set_char_background(c.con, x, y, c.color_light_wall, libtcod.BKGND_SET)
+                else:
+                    libtcod.console_set_char_background(c.con, x, y, c.color_light_ground, libtcod.BKGND_SET)
+                c.map[x][y].explored = True
             else:
-                libtcod.console_set_char_background(c.con, x, y, c.color_dark_ground, libtcod.BKGND_SET)
+                if c.map[x][y].explored:
+                    if wall:
+                        libtcod.console_set_char_background(c.con, x, y, c.color_dark_wall, libtcod.BKGND_SET)
+                    else:
+                        libtcod.console_set_char_background(c.con, x, y, c.color_dark_ground, libtcod.BKGND_SET)
+
 
     libtcod.console_blit(c.con, 0, 0, c.screen_width, c.screen_height, 0, 0, 0)
 

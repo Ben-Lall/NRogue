@@ -11,14 +11,22 @@ libtcod.console_set_default_background(0, c.background_color)
 # Generate Map
 builder.make_map()
 
+# Initialize FOV map
+for y in range(c.MAP_HEIGHT):
+    for x in range(c.MAP_WIDTH):
+        libtcod.map_set_properties(c.fov_map, x, y, not c.map[x][y].block_sight, not c.map[x][y].blocked)
+
 while not libtcod.console_is_window_closed():
-    # Display console
+    # Recompute FOV if needed (the player moved or something)
+    if c.fov_recompute:
+        fov_recompute = False
+        libtcod.map_compute_fov(c.fov_map, c.player.x, c.player.y, c.torch_radius, c.FOV_LIGHT_WALLS, c.FOV_ALGORITHM)
 
+    # Renderer
     builder.render_all()
-
     libtcod.console_flush()
-
     for entity in c.entities:
         entity.clear(c.con)
 
+    # Pend for player input
     io.handle_keys()
