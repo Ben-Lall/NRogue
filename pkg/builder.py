@@ -75,7 +75,6 @@ def render_all():
     y = 1
     for (line, color) in c.msg_buffer:
         words = line.split(' ')
-        print words
         current_line_length = 0
         for word in words:
             current_color = color
