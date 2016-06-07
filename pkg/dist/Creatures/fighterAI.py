@@ -1,9 +1,9 @@
 from .. import libtcodpy as libtcod
 from .. import config as c
 
+
 # AI for a basic monster.
 class FighterAI:
-    # To make warning go away
     def __init__(self):
         pass
 
@@ -15,10 +15,19 @@ class FighterAI:
 
             # If not in range, move towards the player
             if monster.distance_to(c.player) >= 2:
-                monster.move_towards(c.player.x, c.player.y)
+                monster.move_astar(c.player)
 
             # If it's close enough, and the player is still alive, it will attack
 
             elif c.player.stats.hp > 0:
-                print 'you have been attacked by the ' + monster.name + '!'
+                monster.basic_attack(c.player)
+
+    def death_function(self):
+        monster = self.owner
+        print 'the ' + monster.name + ' has died!'
+        monster.move_to_bottom()
+        monster.color = libtcod.dark_red
+        monster.blocks = False
+        monster.ai = None
+        monster.name = 'remains of ' + monster.name
 

@@ -98,7 +98,7 @@ def place_creatures(room):
         while c.is_blocked(x, y):
             x, y = room.get_random_coordinates()
 
-        if libtcod.random_get_int(0, 0, 100) < 80:
+        if libtcod.random_get_int(0, 0, 100) > 80:
             monster = troll.Troll(x, y)
         else:
             monster = orc.Orc(x, y)

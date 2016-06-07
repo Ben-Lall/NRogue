@@ -20,7 +20,7 @@ game_state = 'playing'
 
 # Player Init
 player = None
-player_name = 'me'
+player_name = 'The player'
 
 # Array of Entities
 entities = []
