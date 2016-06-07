@@ -35,7 +35,7 @@ def render_bar(con, x, y, total_width, name, value, maximum, bar_color, back_col
                              name + ': ' + str(value) + '/' + str(maximum))
 
 
-# Writes a message to the game console
+# Adds the message along with its color to the message buffer
 def message(msg, color=libtcod.white):
 
     msg_lines = textwrap.wrap(msg, c.msg_width)
@@ -46,3 +46,10 @@ def message(msg, color=libtcod.white):
             del c.msg_buffer[0]
 
         c.msg_buffer.append((line, color))
+    return c.msg_buffer
+
+
+# Returns true if target is within a range defined by a circle around source with a given radius
+def is_in_radius(target, source, radius):
+    return (target.x - source.x) ** 2 + (target.y - source.y ** 2) <= radius
+

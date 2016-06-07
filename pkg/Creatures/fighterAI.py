@@ -20,7 +20,7 @@ class FighterAI:
 
             # If it's close enough, and the player is still alive, it will attack
 
-            elif c.player.stats.hp > 0:
+            elif c.player.hp() > 0:
                 monster.basic_attack(c.player)
 
     def death_function(self):

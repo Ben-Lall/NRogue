@@ -18,7 +18,7 @@ class Player(Creature):
         # Find if this coordinate has a creature to attack
         target = None
         for entity in c.entities:
-            if entity.x == x and entity.y == y and entity.ai is not None:
+            if entity.x == x and entity.y == y and hasattr(entity, 'ai') and entity.ai is not None:
                 target = entity
                 break
 

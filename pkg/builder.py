@@ -38,7 +38,7 @@ class Rect:
 # Renders all entities and tiles in range of the player
 def render_all():
     for entity in c.entities:
-        if libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y):
+        if c.DEBUG or libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y):
             entity.draw(c.con)
 
     for y in range(c.MAP_HEIGHT):
@@ -68,8 +68,8 @@ def render_all():
     libtcod.console_clear(c.panel)
 
     # Update hp bar
-    util.render_bar(c.panel, 1, 1, c.hp_bar_width, 'HP', c.player.stats.hp, c.player.stats.max_hp, libtcod.darker_red,
-                    libtcod.darkest_red)
+    util.render_bar(c.panel, c.hp_bar_x, c.hp_bar_y, c.hp_bar_width, 'HP', c.player.hp(), c.player.max_hp(),
+                    libtcod.darker_red, libtcod.darkest_red)
 
     # Print line by line the game messages
     y = 1

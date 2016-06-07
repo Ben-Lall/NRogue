@@ -27,7 +27,6 @@ class StatSheet(entity.Entity):
         if self.hp == 0:
             self.owner.death_function()
 
-
     # Modifies power by the operator, making sure to not go below 0
     def mod_power(self, operator):
         self.power = max(0, self.power + operator)

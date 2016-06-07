@@ -22,9 +22,10 @@ game_state = 'playing'
 player = None
 player_name = 'Player'
 
-# Array of Entities
+#  Entities init
 entities = []
 entity_names = set()
+entity_memory_radius = 10
 
 # Map Parameters
 MAP_WIDTH = 80
@@ -51,8 +52,10 @@ panel_height = screen_height / 4
 panel = libtcod.console_new(screen_width, panel_height)
 panel_height = 7
 hp_bar_width = 20
+hp_bar_x = 1
+hp_bar_y = 1
 panel_y = screen_height - panel_height
-msg_x = hp_bar_width + 2
-msg_width = screen_width - 2
+msg_x = hp_bar_width + hp_bar_x + 1
+msg_width = screen_width - hp_bar_x - msg_x
 msg_height = panel_height - 1
 msg_buffer = []

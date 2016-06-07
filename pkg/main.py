@@ -17,7 +17,6 @@ for y in range(c.MAP_HEIGHT):
     for x in range(c.MAP_WIDTH):
         libtcod.map_set_properties(c.fov_map, x, y, not c.map[x][y].block_sight, not c.map[x][y].blocked)
 
-util.message('test', libtcod.dark_red)
 #############################################
 #                Main Loop                  #
 #############################################
@@ -38,9 +37,12 @@ while not libtcod.console_is_window_closed():
     player_action = IO.handle_keys()
     if player_action == 'exit':
         break
-
     # Simulate turns
     if c.game_state == 'playing' and player_action != 'noTurn':
         for entity in c.entities:
-            if entity != c.player and libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y) and entity.ai:
+            if entity != c.player and hasattr(entity, 'ai') and entity.ai and \
+                    (libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y) or
+                         util.is_in_radius(c.player, entity, c.entity_memory_radius)):
                 entity.ai.take_turn()
+
+
