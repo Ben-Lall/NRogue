@@ -10,7 +10,7 @@ class StatSheet(entity.Entity):
         self.power = power
 
     # Modifies hp by the operator, making sure to keep within proper bounds, with the ability to overload if needed
-    def mod_hp(self, operator, overload=False):
+    def mod_health(self, operator, overload=False):
 
         # If current hp is beyond self.max_health, we don't want to accidentally reset to self.max_health
         if self.hp > self.max_hp:
@@ -23,10 +23,6 @@ class StatSheet(entity.Entity):
                 self.hp = min(self.max_hp, self.hp + operator)
         else:
             self.hp = max(0, self.hp + operator)
-
-        if self.hp == 0:
-            self.owner.death_function()
-
 
     # Modifies power by the operator, making sure to not go below 0
     def mod_power(self, operator):

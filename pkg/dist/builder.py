@@ -62,11 +62,6 @@ def render_all():
 
     libtcod.console_blit(c.con, 0, 0, c.screen_width, c.screen_height, 0, 0, 0)
 
-    # Show GUI containing player's stats
-    libtcod.console_set_default_foreground(c.con, libtcod.white)
-    libtcod.console_print_ex(0, 1, c.screen_height - 2, libtcod.BKGND_NONE, libtcod.LEFT,
-                             'HP: ' + str(c.player.stats.hp) + '/' + str(c.player.stats.max_hp))
-
 
 # Creates a vertical tunnel of unblocked tiles
 def create_v_tunnel(y1, y2, x):

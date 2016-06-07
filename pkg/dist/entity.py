@@ -30,8 +30,3 @@ class Entity:
         dx = other.x - self.x
         dy = other.y - self.y
         return math.sqrt(dx ** 2 + dy ** 2)
-
-    # Move this entity to the front of the array, so that it is drawn first and is overwritten by other draw calls
-    def move_to_bottom(self):
-        c.entities.remove(self)
-        c.entities.insert(0, self)
