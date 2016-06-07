@@ -1,5 +1,6 @@
 from .. import libtcodpy as libtcod
 from .. import config as c
+from .. import util
 
 
 # AI for a basic monster.
@@ -24,7 +25,7 @@ class FighterAI:
 
     def death_function(self):
         monster = self.owner
-        print 'the ' + monster.name + ' has died!'
+        util.message('The ' + monster.name + ' has died!')
         monster.move_to_bottom()
         monster.color = libtcod.dark_red
         monster.blocks = False

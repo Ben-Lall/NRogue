@@ -1,6 +1,7 @@
 from .. import entity
 from .. import libtcodpy as libtcod
 from .. import config as c
+from .. import util
 import math
 
 
@@ -79,8 +80,8 @@ class Creature(entity.Entity):
         damage = max(0, self.stats.power - target.stats.defense)
 
         if damage > 0:
-            print self.name + ' attacks ' + target.name + ' for ' + str(damage) + ' hit points.'
+            util.message('The ' + self.name + ' attacks the ' + target.name + ' for ' + str(damage) + ' hit points.')
             target.stats.mod_hp(-1 * damage)
         else:
-            print self.name + ' attacks ' + target
+            util.message(self.name + ' attacks ' + target)
 

@@ -1,17 +1,19 @@
 import math
 import pkg.libtcodpy as libtcod
 import pkg.config as c
+import util as util
 
 
 class Entity:
 
-    def __init__(self, x, y, char, color, name, blocks = True):
+    def __init__(self, x, y, char, color, name, blocks=True):
         self.x = x
         self.y = y
         self.char = char
         self.color = color
         self.name = name
         self.blocks = blocks
+        c.entity_names.add(name)
 
     def draw(self, con):
         libtcod.console_set_default_foreground(con, self.color)
@@ -21,7 +23,7 @@ class Entity:
         libtcod.console_put_char(con, self.x, self.y, ' ', libtcod.BKGND_NONE)
 
     def move(self, dx, dy):
-        if not c.is_blocked(self.x + dx, self.y + dy):
+        if not util.is_blocked(self.x + dx, self.y + dy):
             self.x += dx
             self.y += dy
 

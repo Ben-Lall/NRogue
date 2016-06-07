@@ -2,6 +2,7 @@ import pkg.libtcodpy as libtcod
 import pkg.config as c
 import pkg.tile as tile
 import pkg.entity as entity
+import pkg.util as util
 import Creatures.player as player
 import Creatures.orc as orc
 import Creatures.troll as troll
@@ -63,9 +64,32 @@ def render_all():
     libtcod.console_blit(c.con, 0, 0, c.screen_width, c.screen_height, 0, 0, 0)
 
     # Show GUI containing player's stats
-    libtcod.console_set_default_foreground(c.con, libtcod.white)
-    libtcod.console_print_ex(0, 1, c.screen_height - 2, libtcod.BKGND_NONE, libtcod.LEFT,
-                             'HP: ' + str(c.player.stats.hp) + '/' + str(c.player.stats.max_hp))
+    libtcod.console_set_default_background(c.panel, libtcod.black)
+    libtcod.console_clear(c.panel)
+
+    # Update hp bar
+    util.render_bar(c.panel, 1, 1, c.hp_bar_width, 'HP', c.player.stats.hp, c.player.stats.max_hp, libtcod.darker_red,
+                    libtcod.darkest_red)
+
+    # Print line by line the game messages
+    y = 1
+    for (line, color) in c.msg_buffer:
+        words = line.split(' ')
+        print words
+        current_line_length = 0
+        for word in words:
+            current_color = color
+            if word == c.player.name:
+                current_color = libtcod.purple
+            elif c.entity_names.__contains__(word):
+                current_color = libtcod.dark_red
+            libtcod.console_set_default_foreground(c.panel, current_color)
+            libtcod.console_print_ex(c.panel, c.msg_x + current_line_length, y, libtcod.BKGND_NONE, libtcod.LEFT, word)
+            current_line_length += len(word) + 1
+        y += 1
+
+    # Blit info panel to console
+    libtcod.console_blit(c.panel, 0, 0, c.screen_width, c.panel_height, 0, 0, c.panel_y)
 
 
 # Creates a vertical tunnel of unblocked tiles
@@ -95,7 +119,7 @@ def place_creatures(room):
 
         x, y = room.get_random_coordinates()
 
-        while c.is_blocked(x, y):
+        while util.is_blocked(x, y):
             x, y = room.get_random_coordinates()
 
         if libtcod.random_get_int(0, 0, 100) > 80:

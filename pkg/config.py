@@ -20,14 +20,15 @@ game_state = 'playing'
 
 # Player Init
 player = None
-player_name = 'The player'
+player_name = 'Player'
 
 # Array of Entities
 entities = []
+entity_names = set()
 
 # Map Parameters
 MAP_WIDTH = 80
-MAP_HEIGHT = 45
+MAP_HEIGHT = 43
 map = []
 
 # Mapgen Parameters
@@ -45,18 +46,13 @@ torch_radius = 10
 fov_map = libtcod.map_new(MAP_WIDTH, MAP_HEIGHT)
 fov_recompute = True
 
-
-def is_blocked(x, y):
-    # first test the map tile
-    if map[x][y].blocked:
-        return True
-
-    # now check for any blocking objects
-    for entity in entities:
-        if entity.blocks and entity.x == x and entity.y == y:
-            return True
-
-    return False
-
-
-
+# Initialize information panel
+panel_height = screen_height / 4
+panel = libtcod.console_new(screen_width, panel_height)
+panel_height = 7
+hp_bar_width = 20
+panel_y = screen_height - panel_height
+msg_x = hp_bar_width + 2
+msg_width = screen_width - 2
+msg_height = panel_height - 1
+msg_buffer = []

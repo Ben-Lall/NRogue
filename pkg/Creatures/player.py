@@ -2,6 +2,7 @@ from creature import Creature
 from statsheet import StatSheet
 from .. import libtcodpy as libtcod
 from .. import config as c
+from .. import util
 
 
 class Player(Creature):
@@ -26,12 +27,12 @@ class Player(Creature):
             c.player.basic_attack(target)
 
         # Otherwise, move
-        elif not c.is_blocked(x, y):
+        elif not util.is_blocked(x, y):
             self.x = x
             self.y = y
 
     def player_death(self):
-        print 'You have died!'
+        util.message('You have died!', libtcod.dark_red)
         c.game_state = 'dead'
 
         self.color = libtcod.dark_red

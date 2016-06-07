@@ -1,6 +1,7 @@
 import pkg.libtcodpy as libtcod
 import pkg.config as c
 
+
 # Pends for user keyboard input, then handles it accordingly
 def handle_keys():
     key = libtcod.console_wait_for_keypress(True)
