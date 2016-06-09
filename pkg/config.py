@@ -25,7 +25,7 @@ player_name = 'Player'
 #  Entities init
 entities = []
 entity_names = set()
-entity_memory_radius = 10
+entity_memory_radius = 20
 
 # Map Parameters
 MAP_WIDTH = 80

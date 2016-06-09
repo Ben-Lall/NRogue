@@ -40,9 +40,7 @@ while not libtcod.console_is_window_closed():
     # Simulate turns
     if c.game_state == 'playing' and player_action != 'noTurn':
         for entity in c.entities:
-            if entity != c.player and hasattr(entity, 'ai') and entity.ai and \
-                    (libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y) or
-                         util.is_in_radius(c.player, entity, c.entity_memory_radius)):
+            if hasattr(entity, 'ai') and entity.ai:
                 entity.ai.take_turn()
 
 

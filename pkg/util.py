@@ -51,5 +51,5 @@ def message(msg, color=libtcod.white):
 
 # Returns true if target is within a range defined by a circle around source with a given radius
 def is_in_radius(target, source, radius):
-    return (target.x - source.x) ** 2 + (target.y - source.y ** 2) <= radius
+    return (target.x - source.x) ** 2 + (target.y - source.y) ** 2 <= radius
 

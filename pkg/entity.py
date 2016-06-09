@@ -27,10 +27,16 @@ class Entity:
             self.x += dx
             self.y += dy
 
-    def distance_to(self, other):
-        # Return the distance to another object
-        dx = other.x - self.x
-        dy = other.y - self.y
+    # Return the distance to another object or coordinate pair
+    def distance_to(self, target=None, x=None, y=None):
+        # Must pass in either an entity or coordinate pair
+        assert isinstance(target, Entity) or (type(x) is int and type(y) is int)
+        if target:
+            dx = target.x - self.x
+            dy = target.y - self.y
+        else:
+            dx = x
+            dy = y
         return math.sqrt(dx ** 2 + dy ** 2)
 
     # Move this entity to the front of the array, so that it is drawn first and is overwritten by other draw calls
