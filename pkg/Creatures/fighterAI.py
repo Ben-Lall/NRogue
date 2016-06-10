@@ -17,12 +17,19 @@ class FighterAI:
         if libtcod.map_is_in_fov(c.fov_map, monster.x, monster.y):
             self.destination_x = c.player.x
             self.destination_y = c.player.y
+            print (self.owner.name + ' has begun its pursuit of ' + c.player.name)
+
+        # If the monster has arrived at its destination and doesn't see the player, it gives up
+        elif self.destination_x == self.owner.x and self.destination_y == self.owner.y:
+            self.destination_x = None
+            self.destination_y = None
+            print (self.owner.name + ' has lost sight of ' + c.player.name)
 
         # If the monster has a destination, it should...
         if self.destination_x and self.destination_y:
             # Move towards it if it's far away
             if monster.distance_to(target=c.player) >= 2:
-                monster.move_astar(c.player)
+                monster.move_astar(tar_x=self.destination_x, tar_y=self.destination_y)
 
             # Attack it if it's close
             elif c.player.hp() > 0:

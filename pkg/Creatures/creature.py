@@ -55,7 +55,14 @@ class Creature(entity.Entity):
         dy = int(round(dy / distance))
         self.move(dx, dy)
 
-    def move_astar(self, target):
+    def move_astar(self, target=None, tar_x=None, tar_y=None):
+        if target:
+            tar_x = target.x
+            tar_y = target.y
+        else:
+            for entity in c.entities:
+                if entity.x == tar_x and entity.y == tar_y:
+                    target = entity
         # Create a FOV map that has the dimensions of the map
         fov = libtcod.map_new(c.MAP_WIDTH, c.MAP_HEIGHT)
 
@@ -76,7 +83,7 @@ class Creature(entity.Entity):
         # The 1.41 is the normal diagonal cost of moving, it can be set as 0.0 if diagonal moves are prohibited
         path = libtcod.path_new_using_map(fov, 1.41)
         # Compute the path between self's coordinates and the target's coordinates
-        libtcod.path_compute(path, self.x, self.y, target.x, target.y)
+        libtcod.path_compute(path, self.x, self.y, tar_x, tar_y)
 
         # Check if the path exists, and in this case, also the path is shorter than 25 tiles
         # The path size matters if you want the monster to use alternative longer paths (for example through other rooms) if for example the player is in a corridor
@@ -91,7 +98,7 @@ class Creature(entity.Entity):
         else:
             # Keep the old move function as a backup so that if there are no paths (for example another monster blocks a corridor)
             # it will still try to move towards the player (closer to the corridor opening)
-            self.move_towards(target.x, target.y)
+            self.move_towards(tar_x, tar_y)
 
             # Delete the path to free memory
         libtcod.path_delete(path)
