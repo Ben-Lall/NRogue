@@ -35,8 +35,12 @@ class Entity:
             dx = target.x - self.x
             dy = target.y - self.y
         else:
-            dx = x
-            dy = y
+            dx = x - self.x
+            dy = y - self.y
+        print(self.name + ': | my_x: ' + str(self.x) + ' | my_y: ' + str(self.y))
+        print('dx: ' + str(dx) + ' | tar_x: ' + str(x) + ' | player_x: ' + str(c.player.x))
+        print('dy: ' + str(dy) + ' | tar_y: ' + str(y) + ' | player_y: ' + str(c.player.y))
+        print(str(math.sqrt(dx ** 2 + dy ** 2)))
         return math.sqrt(dx ** 2 + dy ** 2)
 
     # Move this entity to the front of the array, so that it is drawn first and is overwritten by other draw calls

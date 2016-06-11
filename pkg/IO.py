@@ -7,16 +7,18 @@ def handle_keys():
     key = libtcod.console_wait_for_keypress(True)
     move_key_pressed = False
     pre_coordinates = (c.player.x, c.player.y)
-    player_action = None
+
+    # Initialize c.player_action
+    c.player_action = ''
 
     # Alt + Enter: Toggle fullscreen
     if key.vk == libtcod.KEY_ENTER and (key.lalt or key.ralt):
         libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
     if key.vk == libtcod.KEY_ESCAPE:
-        player_action = 'exit'
+        c.player_action = 'exit'
 
-    if c.game_state == 'playing' and player_action != 'exit':
+    if c.game_state == 'playing' and c.player_action != 'exit':
         # Movement keys (Arrows)
         if libtcod.console_is_key_pressed(libtcod.KEY_UP):
             c.player.move(0, -1)
@@ -54,7 +56,7 @@ def handle_keys():
             c.fov_recompute = True
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP5):
             c.fov_recompute = True
-            player_action = 'wait'
+            c.player_action = 'wait'
         elif libtcod.console_is_key_pressed(libtcod.KEY_KP6):
             c.player.move(1, 0)
             move_key_pressed = True
@@ -74,14 +76,10 @@ def handle_keys():
 
         # wait
         elif libtcod.console_is_key_pressed(libtcod.KEY_KPDEC) or key.c == 46:
-            player_action = 'wait'
+            c.player_action = 'wait'
         else:
-            player_action = 'noTurn'
+            c.player_action = 'noTurn'
 
         # Determine if the player has taken a turn
-        if move_key_pressed and pre_coordinates == (c.player.x, c.player.y):
-            player_action = 'noTurn'
-
-    return player_action
-
-
+        if c.player_action != 'attacking' and move_key_pressed and pre_coordinates == (c.player.x, c.player.y):
+            c.player_action = 'noTurn'

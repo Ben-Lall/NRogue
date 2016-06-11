@@ -17,13 +17,11 @@ class FighterAI:
         if libtcod.map_is_in_fov(c.fov_map, monster.x, monster.y):
             self.destination_x = c.player.x
             self.destination_y = c.player.y
-            print (self.owner.name + ' has begun its pursuit of ' + c.player.name)
 
         # If the monster has arrived at its destination and doesn't see the player, it gives up
         elif self.destination_x == self.owner.x and self.destination_y == self.owner.y:
             self.destination_x = None
             self.destination_y = None
-            print (self.owner.name + ' has lost sight of ' + c.player.name)
 
         # If the monster has a destination, it should...
         if self.destination_x and self.destination_y:
@@ -37,6 +35,8 @@ class FighterAI:
 
     def death_function(self):
         monster = self.owner
+        self.destination_y = None
+        self.destination_x = None
         util.message('The ' + monster.name + ' has died!')
         monster.move_to_bottom()
         monster.color = libtcod.dark_red

@@ -34,11 +34,11 @@ while not libtcod.console_is_window_closed():
         entity.clear(c.con)
 
     # Pend for player input
-    player_action = IO.handle_keys()
-    if player_action == 'exit':
+    IO.handle_keys()
+    if c.player_action == 'exit':
         break
     # Simulate turns
-    if c.game_state == 'playing' and player_action != 'noTurn':
+    if c.game_state == 'playing' and c.player_action != 'noTurn':
         for entity in c.entities:
             if hasattr(entity, 'ai') and entity.ai:
                 entity.ai.take_turn()

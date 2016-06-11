@@ -21,6 +21,7 @@ game_state = 'playing'
 # Player Init
 player = None
 player_name = 'Player'
+player_action = ''
 
 #  Entities init
 entities = []

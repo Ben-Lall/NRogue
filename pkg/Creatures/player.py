@@ -25,6 +25,7 @@ class Player(Creature):
         # If there is something to attack, then attack it
         if target is not None:
             c.player.basic_attack(target)
+            c.player_action = 'attacking'
 
         # Otherwise, move
         elif not util.is_blocked(x, y):
