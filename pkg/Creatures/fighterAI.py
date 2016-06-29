@@ -42,5 +42,5 @@ class FighterAI:
         monster.color = libtcod.dark_red
         monster.blocks = False
         monster.ai = None
-        monster.name = 'remains of ' + monster.name
+        monster.name = 'Remains of ' + monster.name
 

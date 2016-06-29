@@ -9,6 +9,7 @@ libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | 
 libtcod.console_init_root(c.screen_width, c.screen_height, 'NRogue', False)
 libtcod.console_set_default_background(0, c.background_color)
 
+
 # Generate Map
 builder.make_map()
 
@@ -17,6 +18,9 @@ for y in range(c.MAP_HEIGHT):
     for x in range(c.MAP_WIDTH):
         libtcod.map_set_properties(c.fov_map, x, y, not c.map[x][y].block_sight, not c.map[x][y].blocked)
 
+# Initialize keyboard and mouse controls
+key = libtcod.Key()
+mouse = libtcod.Mouse()
 #############################################
 #                Main Loop                  #
 #############################################
@@ -27,14 +31,17 @@ while not libtcod.console_is_window_closed():
         fov_recompute = False
         libtcod.map_compute_fov(c.fov_map, c.player.x, c.player.y, c.torch_radius, c.FOV_LIGHT_WALLS, c.FOV_ALGORITHM)
 
+    # Check for events
+    libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
+
     # Renderer
-    builder.render_all()
+    builder.render_all(mouse)
     libtcod.console_flush()
     for entity in c.entities:
         entity.clear(c.con)
 
     # Pend for player input
-    IO.handle_keys()
+    IO.handle_input(key, mouse)
     if c.player_action == 'exit':
         break
     # Simulate turns

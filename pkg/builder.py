@@ -36,11 +36,12 @@ class Rect:
 
 
 # Renders all entities and tiles in range of the player
-def render_all():
+def render_all(mouse):
     for entity in c.entities:
         if c.DEBUG or libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y):
             entity.draw(c.con)
 
+    # Set colors of all the map's tiles
     for y in range(c.MAP_HEIGHT):
         for x in range(c.MAP_WIDTH):
             if c.DEBUG:
@@ -48,7 +49,10 @@ def render_all():
             else:
                 visible = libtcod.map_is_in_fov(c.fov_map, x, y)
             wall = c.map[x][y].blocked
-            if visible:
+            if (x, y) == (mouse.cx, mouse.cy):
+                libtcod.console_set_char_background(c.con, mouse.cx, mouse.cy, c.color_mouse_over +
+                                                    libtcod.console_get_char_background(c.con, x, y))
+            elif visible:
                 if wall:
                     libtcod.console_set_char_background(c.con, x, y, c.color_light_wall, libtcod.BKGND_SET)
                 else:
@@ -60,6 +64,8 @@ def render_all():
                         libtcod.console_set_char_background(c.con, x, y, c.color_dark_wall, libtcod.BKGND_SET)
                     else:
                         libtcod.console_set_char_background(c.con, x, y, c.color_dark_ground, libtcod.BKGND_SET)
+                else:
+                    libtcod.console_set_char_background(c.con, x, y, c.color_unexplored, libtcod.BKGND_SET)
 
     libtcod.console_blit(c.con, 0, 0, c.screen_width, c.screen_height, 0, 0, 0)
 
@@ -86,6 +92,18 @@ def render_all():
             libtcod.console_print_ex(c.panel, c.msg_x + current_line_length, y, libtcod.BKGND_NONE, libtcod.LEFT, word)
             current_line_length += len(word) + 1
         y += 1
+
+    # List the objects at the player's cursor
+    libtcod.console_set_default_foreground(c.panel, libtcod.light_gray)
+    names_list = util.get_names_under_mouse(mouse)
+    names = str(names_list)
+    names = names[2:-2]  # Formatting
+
+    if len(names_list) > 1:
+        # Because of the way things are rendered, the last element of this list is always the object on top
+        names = names_list[-1] + " and " + str(len(names_list) - 1) + " more"
+
+    libtcod.console_print_ex(c.panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, names)
 
     # Blit info panel to console
     libtcod.console_blit(c.panel, 0, 0, c.screen_width, c.panel_height, 0, 0, c.panel_y)

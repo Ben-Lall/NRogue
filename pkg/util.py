@@ -3,6 +3,30 @@ import config as c
 import textwrap
 
 
+# Return a list containing the names of all objects under the player's mouse
+def get_names_under_mouse(mouse):
+    (x, y) = (mouse.cx, mouse.cy)
+    # Create a list of all entities in the player's FOV
+    names = [entity.name for entity in c.entities if entity.x == x and entity.y == y and
+             libtcod.map_is_in_fov(c.fov_map, entity.x, entity.y)]
+
+    return names
+
+
+# Given a number and string word, determines if the string needs pluralization, then
+# goes through
+def pluralize(num, word):
+    if num != 1:
+        pluralization = word
+        if word == 'point':
+            pluralization = 'points'
+        else:
+            print "pluralization for " + word + " not found."
+        return pluralization
+    else:
+        return word
+
+
 def is_blocked(x, y):
     # first test the map tile
     if c.map[x][y].blocked:

@@ -1,12 +1,17 @@
+import pkg.config as c
+
+
+# A tile
 class Tile:
 
-    def __init__(self, blocked, block_sight = None):
+    def __init__(self, blocked, block_sight=None, color=c.color_unexplored):
         self.blocked = blocked
 
         # By default, if a tile is blocked, it also blocks sight
         if block_sight is None:
             block_sight = blocked
         self.block_sight = block_sight
+        self.color = color
 
         # By default, tiles start unexplored
         self.explored = False

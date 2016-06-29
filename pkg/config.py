@@ -3,6 +3,9 @@ import pkg.libtcodpy as libtcod
 # Debug
 DEBUG = False
 
+# FPS
+FPS_LIMIT = 10
+
 # Screen Dimensions
 screen_width = 80
 screen_height = 50
@@ -13,6 +16,8 @@ color_dark_wall = libtcod.Color(65, 45, 10)
 color_light_wall = libtcod.Color(100, 70, 10)
 color_dark_ground = libtcod.Color(22, 22, 22)
 color_light_ground = libtcod.Color(40, 40, 40)
+color_mouse_over = libtcod.Color(255, 80, 80)
+color_unexplored = libtcod.black
 
 # Console
 con = libtcod.console_new(screen_width, screen_height)
@@ -60,3 +65,6 @@ msg_x = hp_bar_width + hp_bar_x + 1
 msg_width = screen_width - hp_bar_x - msg_x
 msg_height = panel_height - 1
 msg_buffer = []
+
+# Initialize mouse over panel
+

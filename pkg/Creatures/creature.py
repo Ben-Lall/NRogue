@@ -6,7 +6,7 @@ import math
 
 
 class Creature(entity.Entity):
-    def __init__(self, x, y, char, color, name, stats, ai=None, death_function=None):
+    def __init__(self, x, y, char, color, name, stats, ai=None, death_function=None, inventory=([0, ])):
         entity.Entity.__init__(self, x, y, char, color, name, True)
 
         # Set up statsheet
@@ -22,6 +22,8 @@ class Creature(entity.Entity):
         self.death_function = death_function
         if self.death_function is None:
             self.death_function = ai.death_function
+
+        self.inventory = inventory
 
     def hp(self):
         return self.stats.hp
@@ -105,10 +107,7 @@ class Creature(entity.Entity):
 
     def basic_attack(self, target):
         damage = max(0, self.power() - target.defense())
-
-        if damage > 0:
-            util.message('The ' + self.name + ' attacks the ' + target.name + ' for ' + str(damage) + ' hit points.')
-            target.mod_hp(-1 * damage)
-        else:
-            util.message(self.name + ' attacks ' + target)
+        util.message('The ' + self.name + ' attacks the ' + target.name + ' for ' + str(damage) + ' hit ' +
+                      util.pluralize(damage, "point") + '.')
+        target.mod_hp(-1 * damage)
 
