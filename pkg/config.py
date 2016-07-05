@@ -33,6 +33,10 @@ entities = []
 entity_names = set()
 entity_memory_radius = 20
 
+# Items init
+items = []
+order = ["Weapon", "Ammo", "Consumable", "Armor", "Misc"]
+
 # Map Parameters
 MAP_WIDTH = 80
 MAP_HEIGHT = 43

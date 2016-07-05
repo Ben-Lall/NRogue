@@ -77,3 +77,4 @@ def message(msg, color=libtcod.white):
 def is_in_radius(target, source, radius):
     return (target.x - source.x) ** 2 + (target.y - source.y) ** 2 <= radius
 
+

@@ -1,5 +1,5 @@
-from creature import Creature
-from statsheet import StatSheet
+from Creature import Creature
+from StatSheet import StatSheet
 from .. import libtcodpy as libtcod
 from .. import config as c
 from .. import util
@@ -7,7 +7,7 @@ from .. import util
 
 class Player(Creature):
     def __init__(self, x, y):
-        stat_sheet = StatSheet(hp=30, defense=2, power=5)
+        stat_sheet = StatSheet(hp=30, defense=2, power=5, max_volume=10, max_carry_weight=100)
         Creature.__init__(self, x, y, '@', libtcod.white, c.player_name, stats=stat_sheet,
                           death_function=self.player_death)
 

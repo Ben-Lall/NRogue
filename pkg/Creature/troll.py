@@ -1,7 +1,7 @@
-from creature import Creature
-from statsheet import StatSheet
+from Creature import Creature
+from StatSheet import StatSheet
 from .. import libtcodpy as libtcod
-from fighterAI import FighterAI
+from FighterAI import FighterAI
 
 
 class Troll(Creature):

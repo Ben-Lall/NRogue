@@ -3,9 +3,10 @@ import pkg.config as c
 import pkg.tile as tile
 import pkg.entity as entity
 import pkg.util as util
-import Creatures.player as player
-import Creatures.orc as orc
-import Creatures.troll as troll
+from Creature.Player import Player
+from Creature.Orc import Orc
+from Creature.Troll import Troll
+from LesserHealingPotion import LesserHealingPotion
 
 
 # a rectangle of tiles
@@ -140,11 +141,30 @@ def place_creatures(room):
             x, y = room.get_random_coordinates()
 
         if libtcod.random_get_int(0, 0, 100) > 80:
-            monster = troll.Troll(x, y)
+            monster = Troll(x, y)
         else:
-            monster = orc.Orc(x, y)
+            monster = Orc(x, y)
 
         c.entities.append(monster)
+
+
+def place_items(room):
+    num_items = libtcod.random_get_int(0, 0, 2)
+
+    for i in range(num_items):
+        item = None
+
+        x, y = room.get_random_coordinates()
+
+        while util.is_blocked(x, y):
+            x, y = room.get_random_coordinates()
+
+        if libtcod.random_get_int(0, 0, 100) > 0:
+            item = LesserHealingPotion(x, y)
+
+        if item is not None:
+            c.entities.insert(0, item)
+            c.items.append(item)
 
 
 # Temporary map generator
@@ -186,7 +206,7 @@ def make_map():
 
             # If this is the first room to be generated, generate and place the player in the center
             if len(c.rooms) == 0:
-                c.player = player.Player(20, 20)
+                c.player = Player(20, 20)
                 c.entities.append(c.player)
                 c.player.x = new_x
                 c.player.y = new_y
@@ -205,9 +225,10 @@ def make_map():
                     create_v_tunnel(prev_y, new_y, new_x)
                     create_h_tunnel(prev_x, new_x, prev_y)
 
-            # Place monsters (but not in the player's starting room)
+            # Place monsters and items (but not in the player's starting room)
             if len(c.rooms) > 1:
                 place_creatures(new_room)
+                place_items(new_room)
 
             # Append new_room to list of rooms
             c.rooms.append(new_room)

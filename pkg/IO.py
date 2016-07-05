@@ -84,8 +84,10 @@ def handle_input(key, mouse):
 
             if key_char == '.':
                 c.player_action = 'wait'
-            if key_char == 'h':
-                c.player.mod_defense(20)
+            elif key_char == 'g':
+                c.player.pick_up(c.player.x, c.player.y)
+            elif key_char == 'c':
+                c.player.use_item(1)
         # default case
         else:
             c.player_action = 'noTurn'
