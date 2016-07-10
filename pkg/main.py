@@ -14,8 +14,8 @@ libtcod.console_set_default_background(0, c.background_color)
 builder.make_map()
 
 # Initialize FOV map
-for y in range(c.MAP_HEIGHT):
-    for x in range(c.MAP_WIDTH):
+for y in range(c.map_height):
+    for x in range(c.map_width):
         libtcod.map_set_properties(c.fov_map, x, y, not c.map[x][y].block_sight, not c.map[x][y].blocked)
 
 # Initialize keyboard and mouse controls
@@ -29,7 +29,7 @@ while not libtcod.console_is_window_closed():
     # Recompute FOV if needed (the player moved or something)
     if c.fov_recompute:
         fov_recompute = False
-        libtcod.map_compute_fov(c.fov_map, c.player.x, c.player.y, c.torch_radius, c.FOV_LIGHT_WALLS, c.FOV_ALGORITHM)
+        libtcod.map_compute_fov(c.fov_map, c.player.x, c.player.y, c.torch_radius, c.fov_light_walls, c.fov_algorithm)
 
     # Check for events
     libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)

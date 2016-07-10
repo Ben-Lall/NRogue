@@ -102,11 +102,11 @@ class Creature(entity.Entity):
                 if entity.x == tar_x and entity.y == tar_y:
                     target = entity
         # Create a FOV map that has the dimensions of the map
-        fov = libtcod.map_new(c.MAP_WIDTH, c.MAP_HEIGHT)
+        fov = libtcod.map_new(c.map_width, c.map_height)
 
         # Scan the current map each turn and set all the walls as unwalkable
-        for y1 in range(c.MAP_HEIGHT):
-            for x1 in range(c.MAP_WIDTH):
+        for y1 in range(c.map_height):
+            for x1 in range(c.map_width):
                 libtcod.map_set_properties(fov, x1, y1, not c.map[x1][y1].block_sight, not c.map[x1][y1].blocked)
 
         # Scan all the objects to see if there are objects that must be navigated around
@@ -145,23 +145,27 @@ class Creature(entity.Entity):
         assert isinstance(target, Creature)
 
         damage = max(0, self.power() - target.defense())
-        util.message('The ' + self.name + ' attacks the ' + target.name + ' for ' + str(damage) + ' hit ' +
-                      util.pluralize(damage, "point") + '.')
+        util.message('The %s attacks the %s for %s hit %s' % (self.name, target.name, damage,
+                                                              util.pluralize(damage, "point")))
         target.mod_hp(-1 * damage)
 
     # Pick up the item at the given coordinates and place it into inventory, if it's possible
-    # Requires: self != Player => self.volume + item.volume <= self.max_volume
+    # Requires: self != Player => self.volume + item.volume <= self.max_volume and
+    #           self != Player => Map[target_x][target_y] contains an Item
     def pick_up(self, target_x, target_y):
         assert type(target_x) is int and type(target_y) is int
+        item_taken = False
 
         for item in c.items:
             if item.x == target_x and item.y == target_y:
                 if self.volume() + item.volume <= self.max_volume():
                     self.add_to_inventory(item)
                     util.message(self.name + ' picks up a ' + item.name)
-
+                    item_taken = True
                 else:
                     util.message('You do not have enough inventory space to pick that up!')
+        if not item_taken:
+            util.message('There is nothing to pick up there!')
 
     # Use the item pertaining to the given token
     # Requires token <= |self.stats.inventory|
@@ -172,7 +176,7 @@ class Creature(entity.Entity):
         used_item.owner = self
 
         used_item.consume()
-        util.message('You use the ' + used_item.name)
+        util.message('%s used the %s' % (self.name, used_item.name))
 
         used_item.owner = None
 

@@ -1,7 +1,7 @@
-from Creature import Creature
-from StatSheet import StatSheet
+from creature import Creature
+from statSheet import StatSheet
 from .. import libtcodpy as libtcod
-from FighterAI import FighterAI
+from fighterAI import FighterAI
 
 
 class Orc(Creature):

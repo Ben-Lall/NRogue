@@ -1,5 +1,5 @@
-from Creature import Creature
-from StatSheet import StatSheet
+from creature import Creature
+from statSheet import StatSheet
 from .. import libtcodpy as libtcod
 from .. import config as c
 from .. import util

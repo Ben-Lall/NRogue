@@ -77,7 +77,7 @@ class StatSheet(entity.Entity):
             cat_len = len(self.inventory[cat_index])
             # If the current row is the correct row, or the item has already been added, then items will need
             # their tokens incremented
-            if category.lower() == item.category or added:
+            if category == item.category or added:
                 # Index with which to start when decrementing tokens, defaults to index 0
                 start = 0
                 if not added:

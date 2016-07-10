@@ -3,9 +3,9 @@ import pkg.config as c
 import pkg.tile as tile
 import pkg.entity as entity
 import pkg.util as util
-from Creature.Player import Player
-from Creature.Orc import Orc
-from Creature.Troll import Troll
+from Creature.player import Player
+from Creature.orc import Orc
+from Creature.troll import Troll
 from LesserHealingPotion import LesserHealingPotion
 
 
@@ -43,8 +43,8 @@ def render_all(mouse):
             entity.draw(c.con)
 
     # Set colors of all the map's tiles
-    for y in range(c.MAP_HEIGHT):
-        for x in range(c.MAP_WIDTH):
+    for y in range(c.map_height):
+        for x in range(c.map_width):
             if c.DEBUG:
                 visible = True
             else:
@@ -79,7 +79,7 @@ def render_all(mouse):
                     libtcod.darker_red, libtcod.darkest_red)
 
     # Print line by line the game messages
-    y = 1
+    y = c.msg_y
     for (line, color) in c.msg_buffer:
         words = line.split(' ')
         current_line_length = 0
@@ -107,7 +107,7 @@ def render_all(mouse):
     libtcod.console_print_ex(c.panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, names)
 
     # Blit info panel to console
-    libtcod.console_blit(c.panel, 0, 0, c.screen_width, c.panel_height, 0, 0, c.panel_y)
+    libtcod.console_blit(c.panel, 0, 0, c.screen_width, c.panel_height, 0, c.panel_x, c.panel_y)
 
 
 # Creates a vertical tunnel of unblocked tiles
@@ -131,7 +131,7 @@ def create_room(room):
 
 # Places creatures in the room at position x,y where c.map[x][y].blocked = False
 def place_creatures(room):
-    num_monsters = libtcod.random_get_int(0, 0, c.MAX_ROOM_MONSTERS)
+    num_monsters = libtcod.random_get_int(0, 0, c.max_room_monsters)
 
     for i in range(num_monsters):
 
@@ -171,16 +171,16 @@ def place_items(room):
 def make_map():
     # Set each tile as impassable, so we can "carve" out level geometry
     c.map = [[tile.Tile(True)
-               for y in range(c.MAP_HEIGHT)]
-                    for x in range(c.MAP_WIDTH)]
+               for y in range(c.map_height)]
+                    for x in range(c.map_width)]
 
-    for r in range(c.MAX_ROOMS):
+    for r in range(c.max_rooms):
         # Random width and height
-        w = libtcod.random_get_int(0, c.ROOM_MIN_SIZE, c.ROOM_MAX_SIZE)
-        h = libtcod.random_get_int(0, c.ROOM_MIN_SIZE, c.ROOM_MAX_SIZE)
+        w = libtcod.random_get_int(0, c.room_min_size, c.room_max_size)
+        h = libtcod.random_get_int(0, c.room_min_size, c.room_max_size)
         # Random position within map boundaries
-        x = libtcod.random_get_int(0, 0, c.MAP_WIDTH - w - 1)
-        y = libtcod.random_get_int(0, 0, c.MAP_HEIGHT - h - 1)
+        x = libtcod.random_get_int(0, 0, c.map_width - w - 1)
+        y = libtcod.random_get_int(0, 0, c.map_height - h - 1)
 
         # Generate Rect
         new_room = Rect(x, y, w, h)

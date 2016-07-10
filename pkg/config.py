@@ -4,11 +4,11 @@ import pkg.libtcodpy as libtcod
 DEBUG = False
 
 # FPS
-FPS_LIMIT = 10
+fps_limit = 10
 
 # Screen Dimensions
-screen_width = 80
-screen_height = 50
+screen_width = 192
+screen_height = 100
 
 # Color Scheme
 background_color = libtcod.white
@@ -35,39 +35,42 @@ entity_memory_radius = 20
 
 # Items init
 items = []
-order = ["Weapon", "Ammo", "Consumable", "Armor", "Misc"]
+order = ["weapon", "ammo", "consumable", "armor", "misc"]
+item_flags = ["heals"]
 
 # Map Parameters
-MAP_WIDTH = 80
-MAP_HEIGHT = 43
+map_width = int((3.0/4) * screen_width)
+map_height = screen_height
 map = []
 
 # Mapgen Parameters
 rooms = []
-MAX_ROOM_MONSTERS = 3
+max_room_monsters = 3
 # Likely will not be used in the future, but for now...
-ROOM_MAX_SIZE = 10
-ROOM_MIN_SIZE = 6
-MAX_ROOMS = 30
+room_max_size = 10
+room_min_size = 6
+max_rooms = 30
 
 # Parameters for FOV
-FOV_ALGORITHM = 0
-FOV_LIGHT_WALLS = True
+fov_algorithm = 0
+fov_light_walls = True
 torch_radius = 10
-fov_map = libtcod.map_new(MAP_WIDTH, MAP_HEIGHT)
+fov_map = libtcod.map_new(map_width, map_height)
 fov_recompute = True
 
 # Initialize information panel
-panel_height = screen_height / 4
-panel = libtcod.console_new(screen_width, panel_height)
-panel_height = 7
-hp_bar_width = 20
-hp_bar_x = 1
+panel_height = screen_height
+panel_width = map_width / 3
+panel = libtcod.console_new(panel_width, panel_height)
+hp_bar_width = 19
+hp_bar_x = 0
 hp_bar_y = 1
-panel_y = screen_height - panel_height
-msg_x = hp_bar_width + hp_bar_x + 1
-msg_width = screen_width - hp_bar_x - msg_x
-msg_height = panel_height - 1
+panel_y = 0
+panel_x = map_width
+msg_x = 0
+msg_y = hp_bar_y + 2
+msg_width = panel_width
+msg_height = panel_height - 1 - hp_bar_y
 msg_buffer = []
 
 # Initialize mouse over panel
