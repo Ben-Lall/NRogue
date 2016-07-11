@@ -41,7 +41,7 @@ class Creature(entity.Entity):
         return self.stats.volume
 
     def max_volume(self):
-        return self.stats.mod_max_volume
+        return self.stats.max_volume
 
     def carry_weight(self):
         return self.stats.carry_weight
@@ -76,6 +76,12 @@ class Creature(entity.Entity):
     def mod_max_carry_weight(self, operator):
         assert type(operator) is int
         self.stats.mod_max_carry_weight(operator)
+
+    def inventory(self):
+        return self.stats.inventory
+
+    def inventory_size(self):
+        return self.stats.inventory_size
 
     def add_to_inventory(self, item):
         self.stats.add_to_inventory(item)

@@ -23,6 +23,10 @@ color_unexplored = libtcod.black
 con = libtcod.console_new(screen_width, screen_height)
 game_state = 'playing'
 
+# Initialize keyboard and mouse controls
+key = libtcod.Key()
+mouse = libtcod.Mouse()
+
 # Player Init
 player = None
 player_name = 'Player'

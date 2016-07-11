@@ -78,3 +78,75 @@ def is_in_radius(target, source, radius):
     return (target.x - source.x) ** 2 + (target.y - source.y) ** 2 <= radius
 
 
+def index_to_token(selector):
+    if type(selector) is str:
+        index = ord(selector)
+    else:
+        index = selector
+    token = -1
+
+    if 97 <= index <= 126:
+        token = index - 96
+    elif 65 <= index <= 90:
+        token = index - 38
+    elif 48 <= index <= 64:
+        token = index + 5
+    elif 33 <= index <= 47:
+        token = index + 37
+
+    return token
+
+
+def token_to_index(token):
+    selector = '  '
+    if 1 <= token <= 26:
+        selector = chr(token + 96) + ':'
+    elif 27 <= token <= 52:
+        selector = chr(token + 38) + ':'
+    elif 53 <= token <= 69:
+        selector = chr(token - 5) + ':'
+    elif 70 <= token <= 84:
+        selector = chr(token - 37) + ':'
+
+    return selector
+
+
+def display_inventory(source):
+    # Set up indent space and header
+    indent_space = '    '
+    header = 'Inventory vol: %s/%s weight:%s/%s' % (str(source.volume()), str(source.max_volume()),
+                                                    str(source.carry_weight()), str(source.max_carry_weight()))
+    header_height = libtcod.console_get_height_rect(c.con, 0, 0, c.screen_width, c.screen_height, header)
+    height = source.inventory_size() + header_height + len(c.order) + 1
+    width = 50
+
+    inventory_window = libtcod.console_new(width, height)
+    libtcod.console_set_default_foreground(inventory_window, libtcod.white)
+    libtcod.console_print_rect_ex(inventory_window, 0, 0, width, height, libtcod.BKGND_NONE, libtcod.LEFT,
+                                  header)
+    libtcod.console_hline(inventory_window, 0, header_height, width)
+
+    y = header_height + 1
+    category_index = 0
+    inventory = source.stats.inventory
+
+    for category in inventory:
+        if len(inventory[category_index]) > 0:
+            libtcod.console_print_ex(inventory_window, 0, y, libtcod.BKGND_NONE, libtcod.LEFT, c.order[category_index])
+            y += 1
+        for item in inventory[category_index]:
+
+            token = item.token
+            name = item.name
+            selector = token_to_index(token)
+            option = '%s%s%s' % (selector, indent_space, name)
+            libtcod.console_print_ex(inventory_window, 2, y, libtcod.BKGND_NONE, libtcod.LEFT, option)
+            y += 1
+            
+        category_index += 1
+
+    xdst = int((1.0 / 10) * c.screen_width)
+    ydst = int((1.0 / 20) * c.screen_height)
+
+    libtcod.console_blit(inventory_window, 0, 0, c.screen_width, c.screen_height, 0, xdst, ydst, 1.0, 0.7)
+    libtcod.console_flush()

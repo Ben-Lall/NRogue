@@ -18,9 +18,6 @@ for y in range(c.map_height):
     for x in range(c.map_width):
         libtcod.map_set_properties(c.fov_map, x, y, not c.map[x][y].block_sight, not c.map[x][y].blocked)
 
-# Initialize keyboard and mouse controls
-key = libtcod.Key()
-mouse = libtcod.Mouse()
 #############################################
 #                Main Loop                  #
 #############################################
@@ -32,16 +29,16 @@ while not libtcod.console_is_window_closed():
         libtcod.map_compute_fov(c.fov_map, c.player.x, c.player.y, c.torch_radius, c.fov_light_walls, c.fov_algorithm)
 
     # Check for events
-    libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
+    libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, c.key, c.mouse)
 
     # Renderer
-    builder.render_all(mouse)
+    builder.render_all(c.mouse)
     libtcod.console_flush()
     for entity in c.entities:
         entity.clear(c.con)
 
     # Pend for player input
-    IO.handle_input(key, mouse)
+    IO.handle_input()
     if c.player_action == 'exit':
         break
     # Simulate turns

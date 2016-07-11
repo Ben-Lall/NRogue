@@ -1,9 +1,10 @@
 import pkg.libtcodpy as libtcod
 import pkg.config as c
+import pkg.util as util
 
 
 # Handles user's mouse and keyboard input
-def handle_input(key, mouse):
+def handle_input(key=c.key, mouse=c.mouse):
 
     move_key_pressed = False
     pre_coordinates = (c.player.x, c.player.y)
@@ -15,7 +16,7 @@ def handle_input(key, mouse):
     if libtcod.console_is_key_pressed(libtcod.KEY_ENTER) and (key.lalt or key.ralt):
         libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
-    if libtcod.console_is_key_pressed(libtcod.KEY_ESCAPE):
+    if libtcod.console_is_key_pressed(libtcod.KEY_ESCAPE) and (key.lalt or key.ralt):
         c.player_action = 'exit'
 
     if c.game_state == 'playing' and c.player_action != 'exit':
@@ -86,8 +87,13 @@ def handle_input(key, mouse):
                 c.player_action = 'wait'
             elif key_char == 'g':
                 c.player.pick_up(c.player.x, c.player.y)
-            elif key_char == 'c':
-                c.player.use_item(1)
+            elif key_char == 'i':
+                c.game_state = 'menu'
+
+                util.display_inventory(c.player)
+                libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, c.key, c.mouse, True)
+                handle_input()
+
         # default case
         else:
             c.player_action = 'noTurn'
@@ -95,3 +101,32 @@ def handle_input(key, mouse):
         # Determine if the player has taken a turn
         if c.player_action != 'attacking' and move_key_pressed and pre_coordinates == (c.player.x, c.player.y):
             c.player_action = 'noTurn'
+
+    elif c.game_state == 'menu' and c.player_action != 'exit':
+        if libtcod.console_is_key_pressed(libtcod.KEY_ESCAPE):
+            c.game_state = 'playing'
+
+        elif key.vk == libtcod.KEY_CHAR:
+            token = util.index_to_token(key.c)
+            if token != -1 and token <= c.player.inventory_size():
+                c.player.use_item(token)
+                c.game_state = 'playing'
+            else:
+                # present the root console to the player and wait for a key-press
+                libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, c.key, c.mouse, True)
+                handle_input()
+        else:
+            # present the root console to the player and wait for a key-press
+            libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, c.key, c.mouse, True)
+            handle_input()
+
+
+
+
+
+
+
+
+
+
+
