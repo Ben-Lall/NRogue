@@ -168,10 +168,11 @@ class Creature(entity.Entity):
                     self.add_to_inventory(item)
                     util.message(self.name + ' picks up a ' + item.name)
                     item_taken = True
+                    print str(self.stats.inventory)
                 else:
                     util.message('You do not have enough inventory space to pick that up!')
         if not item_taken:
-            util.message('There is nothing to pick up there!')
+            util.message("You can\'t pick anything up there!")
 
     # Use the item pertaining to the given token
     # Requires token <= |self.stats.inventory|

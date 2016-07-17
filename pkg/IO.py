@@ -1,6 +1,7 @@
 import pkg.libtcodpy as libtcod
 import pkg.config as c
 import pkg.util as util
+from LesserHealingPotion import LesserHealingPotion
 
 
 # Handles user's mouse and keyboard input
@@ -93,6 +94,10 @@ def handle_input(key=c.key, mouse=c.mouse):
                 util.display_inventory(c.player)
                 libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, c.key, c.mouse, True)
                 handle_input()
+            elif key_char == 'c':
+                item = LesserHealingPotion(c.player.x, c.player.y)
+                c.entities.insert(0, item)
+                c.items.append(item)
 
         # default case
         else:
@@ -110,7 +115,7 @@ def handle_input(key=c.key, mouse=c.mouse):
             token = util.index_to_token(key.c)
             if token != -1 and token <= c.player.inventory_size():
                 c.player.use_item(token)
-                c.game_state = 'playing'
+                util.display_inventory(c.player)
             else:
                 # present the root console to the player and wait for a key-press
                 libtcod.sys_wait_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, c.key, c.mouse, True)

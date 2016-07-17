@@ -18,10 +18,10 @@ def get_names_under_mouse(mouse):
 def pluralize(num, word):
     if num != 1:
         pluralization = word
-        if word == 'point':
-            pluralization = 'points'
+        if word == "point":
+            pluralization = "points"
         else:
-            print "pluralization for " + word + " not found."
+            print "pluralization for %s not found." % word
         return pluralization
     else:
         return word
@@ -129,19 +129,25 @@ def display_inventory(source):
     y = header_height + 1
     category_index = 0
     inventory = source.stats.inventory
+    selector_val = 1
 
     for category in inventory:
         if len(inventory[category_index]) > 0:
             libtcod.console_print_ex(inventory_window, 0, y, libtcod.BKGND_NONE, libtcod.LEFT, c.order[category_index])
             y += 1
         for item in inventory[category_index]:
+            current_item, amount = item.items()[0]
 
-            token = item.token
             name = item.name
-            selector = token_to_index(token)
+            if amount > 1:
+                name += " (%s)" % str(amount)
+
+            selector = token_to_index(selector_val)
             option = '%s%s%s' % (selector, indent_space, name)
             libtcod.console_print_ex(inventory_window, 2, y, libtcod.BKGND_NONE, libtcod.LEFT, option)
+
             y += 1
+            selector_val += 1
             
         category_index += 1
 

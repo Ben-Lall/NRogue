@@ -1,5 +1,6 @@
 from .. import entity
 from .. import config as c
+import collections
 
 
 class StatSheet(entity.Entity):
@@ -16,8 +17,7 @@ class StatSheet(entity.Entity):
 
         self.inventory = []
         for category in c.order:
-            self.inventory.append([])
-
+            self.inventory.append(collections.OrderedDict())
 
     # Modifies hp by the operator, making sure to keep within proper bounds, with the ability to overload if needed
     def mod_hp(self, operator, overload=False):
@@ -67,56 +67,42 @@ class StatSheet(entity.Entity):
 
         # Current category being examined
         cat_index = 0
-        # Value of the item to be added's token; will be incremented as necessary
-        token = 1
-        # Boolean representing if the item has been added
-        added = False
 
         # Iterate through the inventory rows at a time
         for category in c.order:
             cat_len = len(self.inventory[cat_index])
             # If the current row is the correct row, or the item has already been added, then items will need
             # their tokens incremented
-            if category == item.category or added:
-                # Index with which to start when decrementing tokens, defaults to index 0
-                start = 0
-                if not added:
-                    i = 0
-                    # Iterate through this row until either an item that comes lexicographically after the item to be
-                    # added appears, or the end of the row is reached.  This will give the index where the item will
-                    # be added
-                    while i < cat_len and self.inventory[cat_index][i].name < item.name:
-                        i += 1
-                        token += 1
-                    # Add the item to the index
-                    added = True
-                    item.token = token
-                    item.owner = self
-                    self.carry_weight += item.weight
-                    self.volume += item.volume
-                    c.entities.remove(item)
-                    c.items.remove(item)
-                    self.inventory[cat_index].insert(i, item)
-                    # Since the item has been added to this row, the incrementation will need to start at the index
-                    # after where this item was added
-                    start = i + 1
+            if category == item.category:
+                i = 0
+                # Iterate through this row until either an item that comes lexicographically after the item to be
+                # added appears, or the end of the row is reached.  This will give the index where the item will
+                # be added
+                while i < cat_len and self.inventory[cat_index][i].name < item.name:
+                    i += 1
+                # Set up the item to be added
+                item.owner = self
+                self.carry_weight += item.weight
+                self.volume += item.volume
+                c.entities.remove(item)
+                c.items.remove(item)
 
-                # Iterate through the items in this row starting from start, and increment their tokens
-                for i in range(start, cat_len):
-                    self.inventory[cat_index][i].token += 1
-
-            else:
-                # Since the item does not belong to this category, its token should be at least greater than the
-                # largest token in this row
-                token += cat_len
+                # If the item is already in the inventory, increment its total
+                if i < cat_index and item == self.inventory[cat_index][i]:
+                    val = self.inventory[cat_index][item] + 1
+                    self.inventory[cat_index][item] = val
+                # Otherwise add a new element in the dictionary to represent it
+                else:
+                    self.inventory[cat_index][item] = 1
+                    sorted(self.inventory[cat_index], key=lambda t: t[0])
 
             cat_index += 1
 
     # Remove from the inventory the item with the matching token, placing it somewhere on the map if necessary
-    # Requires: 0 < token <= |self.inventory|
+    # Requires: 0 < selector <= |self.inventory|
     # Returns: the item removed
-    def remove_from_inventory(self, token, x=None, y=None):
-        assert type(token) is int
+    def remove_from_inventory(self, selector, x=None, y=None):
+        assert type(selector) is int
         if x and y:
             assert type(x) is int and type(y) is int
 
@@ -124,29 +110,22 @@ class StatSheet(entity.Entity):
         cat_index = 0
         # Tally of the amount of items being considered
         counter = 0
-        # Total amount of items passed over when iterating via rows
-        passed_total = 0
-        # Whether or not the item has already been removed, needed to decrement tokens
-        removed = False
         # The item removed
         removed_item = None
 
         # Iterate through inventory rows at a time.
         for category in c.order:
-            cat_len = len(self.inventory[cat_index])
-            counter += cat_len
-            # If the token is within the current category chunk, or the item has already been removed, then elements
-            # will need their tokens decremented
-            if counter >= token or removed:
-                # Index with which to start when decrementing tokens, defaults to index 0
-                start = 0
-                # If not removed, then the item that needs removing is somewhere in this row
-                if not removed:
-                    # Find the item's index and remove it, then update its x and y and set start to be this item's old
-                    # index
-                    removed = True
-                    item_index = token - passed_total - 1
-                    removed_item = self.inventory[cat_index].pop(item_index)
+            for item in self.inventory[cat_index]:
+                counter += 1
+
+                if counter == selector:
+                    remove_item, amt = self.inventory[cat_index][selector].items()[0]
+
+                    if amt == 1:
+                        del self.inventory[cat_index][selector]
+                    else:
+                        self.inventory[cat_index][removed_item] = amt - 1
+
                     if x and y:
                         removed_item.x = x
                         removed_item.y = y
@@ -155,16 +134,5 @@ class StatSheet(entity.Entity):
                     removed_item.owner = None
                     self.volume -= removed_item.volume
                     self.carry_weight -= removed_item.weight
-                    start = item_index
-                    cat_len -= 1
-
-                # Iterate through the remaining items and decrement their tokens
-                for i in range(start, cat_len):
-                    self.inventory[cat_index][i].token -= 1
-            else:
-                # Since the token was not in this category (and the item still needs removing), add the amount of
-                # items skipped to passed_total
-                passed_total += cat_len
-                cat_index += 1
-
+            cat_index += 1
         return removed_item
